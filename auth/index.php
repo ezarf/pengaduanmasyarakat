@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['login'])) {
+    header('location:../auth2/login.php');
+    exit;
+}
 include 'includes/koneksi.php';
 
 // Ambil data dari database

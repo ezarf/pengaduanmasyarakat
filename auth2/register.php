@@ -1,22 +1,42 @@
 <?php
 session_start();
-if ( isset($_SESSION['login']) && $_SESSION['login'] === 'Sudah Login' ) {
-    header('Location: ../dashboard.php');
+
+if ( isset($_SESSION['login'])  ) {
+    header('Location: ../auth/index.php');
     exit;
 }
 
 require_once('../../process/auth.php');
 
-if (isset($_POST['register'])) {
-    $response = register($_POST);
-    $message = $response['message'] ?? null;
+if ($_POST["register"]){
+    $name = $_POST["name"];
+    $email = $_POST["email"];
+    $password = $_POST["pw"];
 
-    if (!$response['error']) {
-        echo
-        "<script>
-                window.location.replace('login.php');
-        </script>";
+    $cekemail = mysqli_query($conn,"SELECT * from users where email ='$email");
+    if (mysqli_num_rows($cekemail) > 0) {
+        echo "
+        <script>
+        alert('email sudah digunakan');
+          </script>
+        ";
+        exit;
     }
+    $result =mysqli_query($conn,"INSERT INTO users ('','$name','$email','$password')");
+    if ($result){
+        echo "
+         <script>
+         allret('proses pendaftaran berhasil');
+        window.location.replace('login.php');
+          </script>
+        ";
+    
+    }else {
+        echo "<script>
+         allret('proses pendaftaran gagal');
+       
+          </script>";
+}
 }
 ?>
 
@@ -40,17 +60,17 @@ if (isset($_POST['register'])) {
                     <div>
                         <label for="email">Email</label>
                         <input type="email" name="email" id="email" placeholder="stephen@email.com" required>
-                        <?php if( isset($response['errorEmail']) ) { ?><p class="important"><?= $response['messageEmail'] ?></p><?php } ?>
+                        
                     </div>
                     <div>
                         <label for="pw">Password</label>
                         <input type="password" name="pw" id="pw" required>
-                        <?php if( isset($response['errorPw']) ) { ?><p class="important"><?= $response['messagePw'] ?></p><?php } ?>
+                      
                     </div>
                     <div>
                         <label for="pw2">Konfimasi Password</label>
                         <input type="password" name="pw2" id="pw2" required>
-                        <?php if( isset($response['errorPw']) ) { ?><p class="important"><?= $response['messagePw'] ?></p><?php } ?>
+                        
                     </div>
                     <div>
                         <button class="button1" type="submit" name="register">Daftar</button>
