@@ -2,11 +2,11 @@
 session_start();
 
 if ( isset($_SESSION['login'])  ) {
-    header('Location: ../auth/index.php');
+    header('Location: ../crud/index.php');
     exit;
 }
 
-require_once('../../process/auth.php');
+require('../crud/includes/koneksi.php');
 
 if ($_POST["register"]){
     $name = $_POST["name"];

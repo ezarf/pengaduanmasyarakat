@@ -1,10 +1,10 @@
 <?php
 session_start();
 if ( isset($_SESSION['login'])  ) {
-    header('Location: ../auth/index.php');
+    header('Location: ../crud/index.php');
     exit;
 }
-require('../auth/includes/koneksi.php');
+require('../crud/includes/koneksi.php');
 
 if (isset($_POST['login'])){
     $email = $_POST['email'];
